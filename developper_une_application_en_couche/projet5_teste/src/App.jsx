@@ -7,16 +7,16 @@ const App = (props) => {
     const handleChangesElement = (evt) => {
 
         setElement(evt.target.value);
-        handleChangeArray()
-        setListes([]);
+        if(element.length>= 2) {
+            handleChangeArray()
+        }        setListes([]);
 
     }
 
     const handleChangeArray = () =>{
         let url = "http://api.themoviedb.org/3/search/movie?api_key=f33cd318f5135dba306176c13104506a&query=" + element
-        console.log(url)
 
-    if(element.length>= 2){
+
         fetch(url).then(response => response.json().then(data => {
                 console.log(data)
                 setListes((listes) => listes.concat(data.results))
@@ -25,7 +25,9 @@ const App = (props) => {
             }
 
 
-        ))}
+        ))
+        console.log(url)
+
     }
 
 
