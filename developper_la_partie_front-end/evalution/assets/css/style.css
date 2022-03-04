@@ -1,0 +1,22 @@
+.col-sm-4{
+    background-color: #f5f5dc;
+}
+.aboutme {
+    text-align: center;
+    padding: 7px;
+}
+
+hr {
+    background-color: #007bff;
+    height: 3px !important;
+}
+.qrcode{
+    top: 136px;right: 20%;position: absolute;
+
+}
+.sociaux {
+    float: right;
+}
+.titrecv{
+    color:#007bff;
+}

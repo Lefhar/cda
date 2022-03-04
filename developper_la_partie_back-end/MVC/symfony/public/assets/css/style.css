@@ -1,0 +1,15 @@
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+footer {
+    margin-top: auto;
+}
+.ban {
+    max-height: 400px;
+}

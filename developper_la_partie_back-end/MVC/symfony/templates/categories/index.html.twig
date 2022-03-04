@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{#{{ (listes|first).artists.artistName }} recupére le premier élément dans le tableau listes#}
+{% block title %}Liste disques de  {{ (listes|first).artists.artistName }}! {% endblock %}
+{#{{ listes.artists.artistName|first }}#}
+{% block body %}
+
+<div class="container">
+
+    <div class="row p-2">
+
+        <h1>Liste des disques {{ listes|length}} </h1>
+
+        {% for row in listes%}
+
+            <div class="col-sm-6 pb-2">
+
+
+                <div class="card flex-row flex-wrap p-2">
+                    <div class="card-header border-0">
+                        <img src="/assets/images/{{ row.discPicture }}" class="img-fluid" width="300"
+                             alt="{{ row.discTitle }}"    title="{{ row.discTitle }}">
+                    </div>
+                    <div class="card-block px-2">
+                        <h4 class="card-title">{{ row.discTitle }} </h4>
+                        <p class="card-text"><strong>{{ row.artists.artistName }}</strong></p>
+                        <p class="card-text"><strong>Label :</strong> {{ row.discLabel }}</p>
+                        <p class="card-text"><strong>Year :</strong> {{ row.discYear }}</p>
+                        <p class="card-text"><strong>Genre :</strong> {{ row.discGenre }}</p>
+                        <p class="card-text"><a href="{{ path('produit',{ id:row.id }) }}"
+                                                class="btn btn-primary">Détails</a></p>
+
+                    </div>
+                </div>
+
+
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+LOAD DATA LOCAL INFILE '/var/www/html/projet1/alimenter_la_base_de_teste/produit.csv'
+INTO TABLE produit
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\r\n'
+IGNORE 1 LINES
+(CODART,LIBART,UNIMES,STKALE,STKPHY,QTEANN);

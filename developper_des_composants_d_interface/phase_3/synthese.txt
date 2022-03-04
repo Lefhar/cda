@@ -1,0 +1,35 @@
+Phase 3 - Synthèse
+Répondez aux questions suivantes :
+
+Donnez une définition de l'agilité ?
+
+une méthode agile c'est une répartition des tâches sûr des sprints un premier , ensuite chaque jour un petit de 15 minutes
+tout ça définir par le product owner qui fait la relation avec le client lors des sprints quotidien on doit parler de ce qu'on a fait la veille
+ainsi que pouvoir parler de problème éventuel mais aussi ce qu'on va faire dans la journée
+
+
+
+Pourquoi l'Extreme Programming ?
+
+Extréme programming consiste à faire des push sûr chaque sprint afin de voir rapidement tout bug éventuel donc un gain de temps car les bugs peuvent être
+repéré en amont de la fin du projet
+
+
+
+
+Quels avantages y a-t'il à utiliser SCRUM ?
+
+l'avantage est de permettre la modification, l'ajout de fonctionnalité durant la phase de développement
+
+
+
+
+Sprint et intégration continue, expliquez le fonctionnement d'un sprint ?
+un sprint étant une phase de développement
+le sprint étant une phase de 1 à 4 semaines de fonctionnalité
+
+
+
+TDD :(Test Driven Development), recherchez des informations pour expliquer le principe.
+
+le principe du tdd est de développer les testes avant de faire le code afin de s'assurer que tout fonctionne

@@ -1,0 +1,42 @@
+Phase 2
+
+A partir du cas Médiathèque
+
+Identifiez les acteurs.
+
+
+les acteurs
+1 usager (emprunteur, lecteur)
+
+2 bénévole,
+
+3 personnel
+
+Ensuite vous identifiez les différents cas d'usage sur le cas Médiathèque.
+
+- inscription par le personnel
+- créer une carte de lecteur
+- emprunter (cd-rom documentaire (encyclopédies, visites de musées) ,livre
+- consulter livre (spéciaux, microfilm)
+- acheter des documents
+
+
+
+Ecrivez le scénario principal et les scénarios alternatifs pour le cas d'usage qui concerne l'emprunt d'une ressource.
+
+Scenario Emprunter
+
+
+Système: Le système propose de rentrer le code client
+Acteur: Le client entre le numéro et valide
+
+Système: Le système vérifie le paiement de la cotisation:
+    - OK Le système demande de scanner le premier produit
+      - le systéme vérifie le nombre d'emprunt
+    - Pas OK Le système affiche une alerte cotisation non payé
+
+Acteur:
+    - si ok donne le produit à scanner
+    - si pas ok paye la cotisation demandé
+
+Système: Création de la fiche de l'emprunt

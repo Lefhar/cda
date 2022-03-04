@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Database>
+   <Name>mcd mediatheque</Name>
+   <Table>
+      <Name>coordonnnees</Name>
+      <Column>
+         <Name>Id_coordonnnee</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Nom_coordonnee</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <Column>
+         <Name>Prenom_coordonnee</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <Column>
+         <Name>Adresse_coordonnee</Name>
+         <Type>VARCHAR(150) </Type>
+      </Column>
+      <Column>
+         <Name>Ville_coordonnee</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <Column>
+         <Name>Codepostal_coordonnee</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <Column>
+         <Name>Telephone_coordonnee</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <PK>
+         <Key>Id_coordonnnee</Key>
+      </PK>
+   </Table>
+   <Table>
+      <Name>Documents</Name>
+      <Column>
+         <Name>Id_document</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Caution_document</Name>
+         <Type>BOOLEAN</Type>
+      </Column>
+      <Column>
+         <Name>Type_document</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <Column>
+         <Name>Date_document</Name>
+         <Type>DATE</Type>
+      </Column>
+      <Column>
+         <Name>Titre_document</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <Column>
+         <Name>Auteur_document</Name>
+         <Type>VARCHAR(50) </Type>
+      </Column>
+      <PK>
+         <Key>Id_document</Key>
+      </PK>
+   </Table>
+   <Table>
+      <Name>ecran</Name>
+      <Column>
+         <Name>Id_ecran</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <PK>
+         <Key>Id_ecran</Key>
+      </PK>
+   </Table>
+   <Table>
+      <Name>utilisateurs</Name>
+      <Column>
+         <Name>Id_utilisateur</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Cotisation_utilisateur</Name>
+         <Type>DATE</Type>
+      </Column>
+      <Column>
+         <Name>Id_coordonnnee</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <PK>
+         <Key>Id_utilisateur</Key>
+      </PK>
+      <FK>
+         <Key>Id_coordonnnee</Key>
+         <Reference>coordonnnees(Id_coordonnnee)</Reference>
+      </FK>
+   </Table>
+   <Table>
+      <Name>personnels</Name>
+      <Column>
+         <Name>Id_personnel</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Id_coordonnnee</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <PK>
+         <Key>Id_personnel</Key>
+      </PK>
+      <FK>
+         <Key>Id_coordonnnee</Key>
+         <Reference>coordonnnees(Id_coordonnnee)</Reference>
+      </FK>
+   </Table>
+   <Table>
+      <Name>benevoles</Name>
+      <Column>
+         <Name>Id_benevole</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Id_coordonnnee</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <PK>
+         <Key>Id_benevole</Key>
+      </PK>
+      <FK>
+         <Key>Id_coordonnnee</Key>
+         <Reference>coordonnnees(Id_coordonnnee)</Reference>
+      </FK>
+   </Table>
+   <Table>
+      <Name>emprunter</Name>
+      <Column>
+         <Name>Id_utilisateur</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Id_document</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Date_emprunter</Name>
+         <Type>DATE</Type>
+      </Column>
+      <Column>
+         <Name>Dateretour_emprunter</Name>
+         <Type>DATE</Type>
+      </Column>
+      <Column>
+         <Name>Daterelance_emprunter</Name>
+         <Type>DATE</Type>
+      </Column>
+      <Column>
+         <Name>Etat_emprunter</Name>
+         <Type>BOOLEAN</Type>
+      </Column>
+      <PK>
+         <Key>Id_utilisateur, Id_document</Key>
+      </PK>
+      <FK>
+         <Key>Id_utilisateur</Key>
+         <Reference>utilisateurs(Id_utilisateur)</Reference>
+      </FK>
+      <FK>
+         <Key>Id_document</Key>
+         <Reference>Documents(Id_document)</Reference>
+      </FK>
+   </Table>
+   <Table>
+      <Name>visionner</Name>
+      <Column>
+         <Name>Id_document</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <Column>
+         <Name>Id_ecran</Name>
+         <Type>INT AUTO_INCREMENT</Type>
+      </Column>
+      <PK>
+         <Key>Id_document, Id_ecran</Key>
+      </PK>
+      <FK>
+         <Key>Id_document</Key>
+         <Reference>Documents(Id_document)</Reference>
+      </FK>
+      <FK>
+         <Key>Id_ecran</Key>
+         <Reference>ecran(Id_ecran)</Reference>
+      </FK>
+   </Table>
+</Database>

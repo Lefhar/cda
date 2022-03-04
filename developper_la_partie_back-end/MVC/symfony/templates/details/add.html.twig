@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un vinyle!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row p-2">
+<h2>Ajout d'un vinyle</h2>
+        <form action="" method="post"  enctype="multipart/form-data">
+            {% if error is not empty %}
+
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input class="form-control" type="text" name="title" id="title"
+                       value="{{ app.request.request.get("title") }}" placeholder="Enter title">
+            </div>
+
+
+            <div class="form-group">
+                <label for="artist">Artist</label>
+                <select class="form-control" name="artist" id="artist">
+                    {% for row in menu %}
+                        {% if  (app.request.request.get("artist"))==(row.id)  %}
+
+                            <option value="{{ app.request.request.get("artist") }}">{{ row.ArtistName }}</option>
+                        {% endif %}
+                    {%  endfor %}
+
+                    {% for row in menu %}
+                        {% if (app.request.request.get("artist"))!=(row.id)%}
+                    <option value="{{ row.id }}">{{ row.ArtistName }}</option>
+                            {% endif %}
+                    {%  endfor %}
+
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input class="form-control" type="text" name="year" id="year"
+                       value="{{ app.request.request.get("year") }}" placeholder="Enter year">
+            </div>
+            <div class="form-group">
+                <label for="label">Label</label>
+                <input class="form-control" type="text" name="label" id="label"
+                       value="{{ app.request.request.get("label") }}" placeholder="Enter label">
+            </div>
+
+
+            <div class="form-group">
+                <label for="genre">Gender</label>
+                <input class="form-control" type="text" name="genre" id="genre"
+                       value="{{ app.request.request.get("genre") }}" placeholder="Enter gender">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input class="form-control" type="number" name="price" id="price"
+                       value="{{ app.request.request.get("price") }}" placeholder="Enter price"  pattern="[0-9]+(\\.[0-9][0-9]?)?">
+            </div>
+
+            <div class="form-group pb-2">
+                <label for="disc_picture">Picture</label>
+                <input class="form-control" type="file" name="disc_picture" id="disc_picture" accept="image/*">
+            </div>
+
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Ajouter</button>
+                <a href="{{ path('listes') }}" class="btn btn-dark">Retour</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
