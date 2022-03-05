@@ -48,10 +48,15 @@
                             <i class="fa fa-solid fa-2x bgcaddie  fa-user"></i>  </a>
                         <ul class="dropdown-menu" aria-labelledby="navbaruserDropdown">
 
+                            <li><a class="dropdown-item" href="{{ path('app_profil') }}">
+                                    Mon profil
+                                </a></li>
+                            <li><a class="dropdown-item" href="{{ path('mescommandes') }}">
+                                    Mes commandes
+                                </a></li>
                             <li><a class="dropdown-item" href="{{ path('app_logout') }}">
                                     Deconnexion
                                 </a></li>
-
                         </ul>
 
                     </li>
@@ -157,7 +162,7 @@
                 </nav>
                 <nav class="navbar navbar-expand-lg navbar-dark bg-menu-second navbar-lg">
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <form class="form-inline my-4 my-lg-0" action="{{ path('search') }}">
+                        <form class="form-inline my-4 my-lg-0" action="{{ path('search') }}" method="get">
                             <input class="form-control mr-sm-2" type="search" name="q" placeholder="entrez votre recherche" aria-label="entrez votre recherche">
                             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Rechercher</button>
                         </form>
@@ -243,7 +248,7 @@
                     </div>
                 </nav>
 
-                <form action="{{ path('search') }}" method="post" class="p-2 d-lg-none d-sm-block" >
+                <form action="{{ path('search') }}" method="get" class="p-2 d-lg-none d-sm-block" >
                     <div class="input-group">
                         <input type="text" name="q" class="form-control border border-primary borderinput" placeholder="entrez votre recherche" aria-label="entrez votre recherche" aria-describedby="basic-addon2">
                         <div class="input-group-append">
