@@ -45,7 +45,7 @@
                             {%  set quantite = quantite + rowOrdDet.quantite %}
                         {% endfor %}
                         <p>Nombre d'articles : {{ quantite }}</p>
-                        <p>Pour un total de <span class="text-success"> {{ total }}€</span> </p>
+                        <p>Pour un total HT de <span class="text-success"> {{ total }}€</span> </p>
                         <p><a class="btn btn-info" href="{{ path('facturePdf',{order:rowOrder.id}) }}" download>Técharger ma facture
                                 <i class="fa fa-file-pdf-o fa-2x text-danger bg-light"></i>
                             </a>
