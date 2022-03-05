@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Orders;
-use App\Repository\CustomersRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
