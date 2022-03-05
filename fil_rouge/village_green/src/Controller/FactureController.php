@@ -8,6 +8,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 class FactureController extends AbstractController
 {
     /**
@@ -29,7 +30,7 @@ class FactureController extends AbstractController
      * @Route("/facture/vu/{order}", name="facture")
      */
 
-    public function facture(Orders $order, CustomersRepository $user)
+    public function facture(Orders $order): Response
     {
 
 
