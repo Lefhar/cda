@@ -4,16 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Customers;
 use App\Entity\Lives;
+use App\Entity\Orders;
 use App\Repository\CategoriesRepository;
 use App\Repository\CustomersRepository;
 use App\Repository\LiveRepository;
 use App\Repository\OrdersRepository;
+use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Security;
 
 class UsersController extends AbstractController
 {
@@ -123,12 +127,13 @@ class UsersController extends AbstractController
     /**
      * @Route("/profil/mescommandes", name="mescommandes")
      */
-    public function mescommandes(CategoriesRepository $cat, OrdersRepository $repo,CustomersRepository $client, LiveRepository $habiter)
+    public function mescommandes(CategoriesRepository $cat, OrdersRepository $repo, CustomersRepository $user): Response
     {
-        $profil = $client->findOneBy(['users' => $this->getUser()]);
 
-        $live = $habiter->findAdresse($profil, 0);
-        dump($repo->findOneBy(['LivesDelivery'=>$live->getId()]));
-        return $this->render('security/mescommandes.html.twig', ['menu' => $cat->findAll(), 'commandes' => $repo->findBy(['LivesDelivery'=>$live->getId()])]);
+        return $this->render('security/mescommandes.html.twig', [
+                'menu' => $cat->findAll(),
+                'commandes' => $repo->findBy(['customer' => $user->findOneBy(['users' => $this->getUser()])])
+            ]
+        );
     }
 }

@@ -61,6 +61,12 @@ class Orders
      */
     private $ordersDetails;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="orders")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $customer;
+
     public function __construct()
     {
         $this->ordersDetails = new ArrayCollection();
@@ -183,5 +189,20 @@ class Orders
         }
 
         return $this;
+    }
+
+    public function getCustomer(): ?Customers
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customers $customer): self
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+    public function __toString() {
+        return $this->id;
     }
 }

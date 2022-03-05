@@ -51,6 +51,7 @@ class PaiementController extends AbstractController
         $profil = $client->findOneBy(['users' => $this->getUser()]);
         $live = $habiter->findAdresse($profil, 0);
         $orders->setOrderDate(new \DateTime());
+        $orders->setCustomer($profil);
         $orders->setLivesBilling($live);
         $orders->setLivesDelivery($live);
         $orders->setStatus(0);
