@@ -104,6 +104,12 @@
                                         Bonjour {{ app.user.email }}   </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbaruserDropdown">
 
+                                        <li><a class="dropdown-item" href="{{ path('app_profil') }}">
+                                                Mon profil
+                                            </a></li>
+                                        <li><a class="dropdown-item" href="{{ path('mescommandes') }}">
+                                                Mes commandes
+                                            </a></li>
                                         <li><a class="dropdown-item" href="{{ path('app_logout') }}">
                                                 Deconnexion
                                             </a></li>

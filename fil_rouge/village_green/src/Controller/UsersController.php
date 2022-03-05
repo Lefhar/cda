@@ -7,6 +7,7 @@ use App\Entity\Lives;
 use App\Repository\CategoriesRepository;
 use App\Repository\CustomersRepository;
 use App\Repository\LiveRepository;
+use App\Repository\OrdersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,4 +120,15 @@ class UsersController extends AbstractController
 
     }
 
+    /**
+     * @Route("/profil/mescommandes", name="mescommandes")
+     */
+    public function mescommandes(CategoriesRepository $cat, OrdersRepository $repo,CustomersRepository $client, LiveRepository $habiter)
+    {
+        $profil = $client->findOneBy(['users' => $this->getUser()]);
+
+        $live = $habiter->findAdresse($profil, 0);
+        dump($repo->findOneBy(['LivesDelivery'=>$live->getId()]));
+        return $this->render('security/mescommandes.html.twig', ['menu' => $cat->findAll(), 'commandes' => $repo->findBy(['LivesDelivery'=>$live->getId()])]);
+    }
 }
