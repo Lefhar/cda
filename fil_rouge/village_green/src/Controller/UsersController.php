@@ -4,20 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Customers;
 use App\Entity\Lives;
-use App\Entity\Orders;
 use App\Repository\CategoriesRepository;
 use App\Repository\CustomersRepository;
 use App\Repository\LiveRepository;
 use App\Repository\OrdersRepository;
-use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Core\Security;
 
 class UsersController extends AbstractController
 {
@@ -58,7 +54,7 @@ class UsersController extends AbstractController
     /**
      * @Route("/profil", name="app_profil")
      */
-    public function profil(CustomersRepository $profil, CategoriesRepository $cat)
+    public function profil(CustomersRepository $profil, CategoriesRepository $cat): Response
     {
 
         $client = $profil->findOneBy(['users' => $this->getUser()]);
@@ -107,7 +103,6 @@ class UsersController extends AbstractController
 
 
             if (!$client->findOneBy(['users' => $this->getUser()])) {
-
                 $profil->setUsers($this->getUser());
                 $live->addCustomer($profil);
                 $profil->addLive($live);

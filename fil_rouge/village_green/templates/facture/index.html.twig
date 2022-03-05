@@ -73,30 +73,36 @@
         .container div {
             display: table-cell;
         }
+
         .bgcaddie {
             color: #011D7A !important;
         }
+
         .textLogo {
             font-family: Candara;
             font-weight: bold;
             font-size: 2.8rem;
         }
+
         .LinkLogo, .LinkLogo:hover, .LinkLogo:focus {
             text-decoration: none;
         }
+
         .text-dark {
             color: #343a40 !important;
         }
-body{
-    font-size: 20px;
-}
+
+        body {
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div>
         <a class="LinkLogo" href="/">
-            <span class="textLogo bgcaddie">Village</span><i class="fa fa-solid fa-guitar"></i><span class="textLogo text-dark">Green</span>
+            <span class="textLogo bgcaddie">Village</span><i class="fa fa-solid fa-guitar"></i><span
+                    class="textLogo text-dark">Green</span>
         </a>
 
         <p>10 rue de la guitare</p>
@@ -115,46 +121,46 @@ body{
 </div>
 
 
-    <table class="table-facture">
-        <caption>Facture n°{{ order.id }}</caption>
-        <thead>
+<table class="table-facture">
+    <caption>Facture n°{{ order.id }}</caption>
+    <thead>
+    <tr>
+        <th>Produit</th>
+        <th>Quantité</th>
+        <th>Prix unitaire</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% set total = 0 %}
+    {% set quantite = 0 %}
+    {% for row in order.ordersDetails %}
         <tr>
-            <th>Produit</th>
-            <th>Quantité</th>
-            <th>Prix unitaire</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% set total = 0 %}
-        {% set quantite = 0 %}
-        {% for row in order.ordersDetails %}
-            <tr>
-                {#        {{ dump(row) }} #}
+            {#        {{ dump(row) }} #}
 
-                <td class="fld-log">{{ row.product.name }}</td>
-                <td class="fld-num">{{ row.quantite }}</td>
-                <td class="lib-acti">{{ row.unitPrice }}€</td>
-            </tr>
-            {% set total = total + row.unitPrice * row.quantite %}
-        {% endfor %}
-        </tbody>
+            <td class="fld-log">{{ row.product.name }}</td>
+            <td class="fld-num">{{ row.quantite }}</td>
+            <td class="lib-acti">{{ row.unitPrice }}€</td>
+        </tr>
+        {% set total = total + row.unitPrice * row.quantite %}
+    {% endfor %}
+    </tbody>
 
-        <tfoot>
-        <tr>
-            <th colspan="2">Sous Total HT</th>
-            <td class="lib-acti">{{ total }}€</td>
-        </tr>
-        <tr>
-            <th colspan="2">Tva</th>
-            {% set tva = total *0.2 %}
-            <td class="lib-acti">{{ tva }}€</td>
-        </tr>
+    <tfoot>
+    <tr>
+        <th colspan="2">Sous Total HT</th>
+        <td class="lib-acti">{{ total }}€</td>
+    </tr>
+    <tr>
+        <th colspan="2">Tva</th>
+        {% set tva = total *0.2 %}
+        <td class="lib-acti">{{ tva }}€</td>
+    </tr>
 
-        <tr>
-            <th colspan="2">Total TTC</th>
-            <td class="lib-acti">{{ total + tva }}€</td>
-        </tr>
-        </tfoot>
-    </table>
+    <tr>
+        <th colspan="2">Total TTC</th>
+        <td class="lib-acti">{{ total + tva }}€</td>
+    </tr>
+    </tfoot>
+</table>
 </body>
 </html>
