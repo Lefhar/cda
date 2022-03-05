@@ -137,16 +137,17 @@
 
         <tfoot>
         <tr>
+            <th colspan="2">Sous Total HT</th>
+            <td class="lib-acti">{{ total }}€</td>
+        </tr>
+        <tr>
             <th colspan="2">Tva</th>
             {% set tva = total *0.2 %}
             <td class="lib-acti">{{ tva }}€</td>
         </tr>
+
         <tr>
-            <th colspan="2">Sous Total</th>
-            <td class="lib-acti">{{ total }}€</td>
-        </tr>
-        <tr>
-            <th colspan="2">Total</th>
+            <th colspan="2">Total TTC</th>
             <td class="lib-acti">{{ total + tva }}€</td>
         </tr>
         </tfoot>
