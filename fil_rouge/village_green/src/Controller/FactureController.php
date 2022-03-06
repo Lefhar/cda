@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Orders;
+use App\Repository\CustomersRepository;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,8 +15,12 @@ class FactureController extends AbstractController
      * @Route("/facture/pdf/{order}", name="facturePdf")
      */
 
-    public function facturePdf(Pdf $knpSnappyPdf, Orders $order): PdfResponse
+    public function facturePdf(Pdf $knpSnappyPdf, Orders $order, CustomersRepository $cust)
     {
+        if($order->getCustomer() !== $cust->findOneBy(['users'=>$this->getUser()]))
+        {
+            return $this->redirectToRoute('accueil');
+        }
         $html = $this->renderView('facture/index.html.twig', array(
             'order' => $order
         ));
@@ -29,10 +34,13 @@ class FactureController extends AbstractController
      * @Route("/facture/vu/{order}", name="facture")
      */
 
-    public function facture(Orders $order): Response
+    public function facture(Orders $order, CustomersRepository $cust): Response
     {
 
-
+        if($order->getCustomer() !== $cust->findOneBy(['users'=>$this->getUser()]))
+        {
+            return $this->redirectToRoute('accueil');
+        }
         return $this->render('facture/index.html.twig', [
                 'order' => $order
             ]

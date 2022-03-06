@@ -32,7 +32,7 @@
         }
 
         td.lib-acti {
-            font-style: italic;
+            /*font-style: italic;*/
             width: 200px;
             text-align: center;
         }
@@ -67,7 +67,6 @@
             width: 100%;
             padding-left: 4px;
             padding-right: 4px;
-            font-size: 20px;
         }
 
         .container div {
@@ -109,9 +108,9 @@
         <p>80000 Amiens</p>
     </div>
     <div>
-        <p>{{ (order.LivesBilling.customers|first).gender|capitalize }}
-            {{ (order.LivesBilling.customers|first).lastname|capitalize }}
-            {{ (order.LivesBilling.customers|first).firstname|capitalize }}</p>
+        <p>{{ order.customer.gender|capitalize }}
+            {{ order.customer.lastname|capitalize }}
+            {{ order.customer.firstname|capitalize }}</p>
         <p>{{ order.LivesBilling.address }}  </p>
         <p>{{ order.LivesBilling.zipcode }} {{ order.LivesBilling.city|capitalize }}
             {{ order.LivesBilling.country|capitalize }} </p>
