@@ -35,7 +35,15 @@ class PaiementController extends AbstractController
             'menu' => $cat->findAll(),
         ]);
     }
-
+//    /**
+//     * @route("/teste/{id}",name="testeemail")
+//     */
+//    public function teste(OrdersRepository $repo,$id){
+//        $order= $repo->find($id);
+//        return $this->render('paiement/confirmation_email.html.twig', [
+//            'order' => $order,
+//        ]);
+//    }
     /**
      * @Route("/paiementvalider", name="OrderComplete")
      */
@@ -45,7 +53,7 @@ class PaiementController extends AbstractController
 
 
         $orders = new Orders();
-
+        $totalht=0;
 
         $panier = $session->get("panier", []);
         if (empty($panier)) {
@@ -67,7 +75,7 @@ class PaiementController extends AbstractController
             $panier[$key]['prix'] = $prodid->getPrice();
             $panier[$key]['stock'] = $prodid->getStock();
             //  dd($key);
-
+            $totalht += $panier[$key]['prix'] * $panier[$key]['qte'];
             $orderDetail->setProduct($prodid);
             $orderDetail->setQuantite($panier[$key]['qte']);
             $orderDetail->setUnitPrice($panier[$key]['prix']);
@@ -79,10 +87,12 @@ class PaiementController extends AbstractController
         }
         $manager->flush();
         $html = $this->renderView('paiement/confirmation_email.html.twig', array(
-            'order' => $orders
+            'order' => $orders,
+            'total' => $totalht
         ));
         $text = $this->renderView('paiement/confirmation_email_text.html.twig', array(
-            'order' => $orders
+            'order' => $orders,
+            'total' => $totalht
         ));
         $session->set('panier', []);
         $email = ((new TemplatedEmail()))
