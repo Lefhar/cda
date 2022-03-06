@@ -9,6 +9,7 @@ use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+
 class FactureController extends AbstractController
 {
     /**
@@ -17,8 +18,7 @@ class FactureController extends AbstractController
 
     public function facturePdf(Pdf $knpSnappyPdf, Orders $order, CustomersRepository $cust)
     {
-        if($order->getCustomer() !== $cust->findOneBy(['users'=>$this->getUser()])and $this->getUser()->getRoles() == "ROLE_USER")
-        {
+        if ($order->getCustomer() !== $cust->findOneBy(['users' => $this->getUser()]) and $this->getUser()->getRoles() == "ROLE_USER") {
             return $this->redirectToRoute('accueil');
         }
         $html = $this->renderView('facture/index.html.twig', array(
@@ -36,11 +36,10 @@ class FactureController extends AbstractController
 
     public function facture(Orders $order, CustomersRepository $cust): Response
     {
-dump($this->getUser()->getRoles());
-        if($order->getCustomer() !== $cust->findOneBy(['users'=>$this->getUser()])and !in_array("ROLE_ADMIN",$this->getUser()->getRoles()))
-        {
+//dump($this->getUser()->getRoles());
+        if ($order->getCustomer() !== $cust->findOneBy(['users' => $this->getUser()]) and !in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
 
-          //  return $this->redirectToRoute('accueil');
+            return $this->redirectToRoute('accueil');
         }
         return $this->render('facture/index.html.twig', [
                 'order' => $order
