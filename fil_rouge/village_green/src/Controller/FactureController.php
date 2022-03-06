@@ -36,7 +36,6 @@ class FactureController extends AbstractController
 
     public function facture(Orders $order, CustomersRepository $cust): Response
     {
-//dump($this->getUser()->getRoles());
         if ($order->getCustomer() !== $cust->findOneBy(['users' => $this->getUser()]) and !in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
 
             return $this->redirectToRoute('accueil');

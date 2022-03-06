@@ -16,6 +16,7 @@
             font-weight: 400;
             line-height: 1.5;
         }
+
         .table-facture th,
         .table-facture td {
             border: 1px solid gray;
@@ -81,6 +82,10 @@
             display: table-cell;
         }
 
+        .entreprise {
+            width: 60%;
+        }
+
         .bgcaddie {
             color: #011D7A !important;
         }
@@ -103,7 +108,7 @@
 </head>
 <body>
 <div class="container">
-    <div>
+    <div class="entreprise">
         <a class="LinkLogo" href="/">
             <span class="textLogo bgcaddie">Village</span><i class="fa fa-solid fa-guitar"></i><span
                     class="textLogo text-dark">Green</span>
@@ -119,7 +124,10 @@
         <p>{{ order.LivesBilling.address }}  </p>
         <p>{{ order.LivesBilling.zipcode }} {{ order.LivesBilling.city|capitalize }}
             {{ order.LivesBilling.country|capitalize }} </p>
-        <p>Date : {{ order.orderDate|date('Y-m-d h:i:s') }} </p>
+        </p>
+        <p><strong>Téléphone :</strong> {{ order.customer.telephone }} </p>
+        <p><strong>Email :</strong> {{ order.customer.users.email }} </p>
+        <p><strong>Date :</strong> {{ order.orderDate|date('Y-m-d h:i:s') }} </p>
 
     </div>
 </div>
@@ -139,11 +147,10 @@
     {% set quantite = 0 %}
     {% for row in order.ordersDetails %}
         <tr>
-            {#        {{ dump(row) }} #}
 
-            <td class="fld-log">{{ row.product.name }}</td>
+            <td class="fld-log">{{ row.product.catprod.name }} {{ row.product.name }}</td>
             <td class="fld-num">{{ row.quantite }}</td>
-            <td class="lib-acti">{{ row.unitPrice }}€</td>
+            <td class="lib-acti">{{ row.unitPrice|number_format(2, '.', ' ') }}€</td>
         </tr>
         {% set total = total + row.unitPrice * row.quantite %}
     {% endfor %}
@@ -152,17 +159,17 @@
     <tfoot>
     <tr>
         <th colspan="2">Sous Total HT</th>
-        <td class="lib-acti">{{ total }}€</td>
+        <td class="lib-acti">{{ total|number_format(2, '.', ' ') }}€</td>
     </tr>
     <tr>
         <th colspan="2">Tva</th>
         {% set tva = total *0.2 %}
-        <td class="lib-acti">{{ tva }}€</td>
+        <td class="lib-acti">{{ tva|number_format(2, '.', ' ') }}€</td>
     </tr>
 
     <tr>
         <th colspan="2">Total TTC</th>
-        <td class="lib-acti">{{ total + tva }}€</td>
+        <td class="lib-acti">{{ (total + tva)|number_format(2, '.', ' ') }}€</td>
     </tr>
     </tfoot>
 </table>
