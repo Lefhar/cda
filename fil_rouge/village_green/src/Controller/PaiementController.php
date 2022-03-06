@@ -39,8 +39,8 @@ class PaiementController extends AbstractController
     /**
      * @Route("/paiementvalider", name="OrderComplete")
      */
-    public function OrderComplete(SessionInterface $session, CustomersRepository  $client,LiveRepository $habiter,
-                                   EntityManagerInterface $manager, ProductsRepository $produit,MailerInterface $mailer): Response
+    public function OrderComplete(SessionInterface       $session, CustomersRepository $client, LiveRepository $habiter,
+                                  EntityManagerInterface $manager, ProductsRepository $produit, MailerInterface $mailer): Response
     {
 
 
@@ -48,8 +48,8 @@ class PaiementController extends AbstractController
 
 
         $panier = $session->get("panier", []);
-        if(empty($panier)){
-            return  $this->redirectToRoute('accueil');
+        if (empty($panier)) {
+            return $this->redirectToRoute('accueil');
         }
         $profil = $client->findOneBy(['users' => $this->getUser()]);
         $live = $habiter->findAdresse($profil, 0);
@@ -61,12 +61,12 @@ class PaiementController extends AbstractController
         $manager->persist($orders);
 
 
-        foreach ($panier as $key =>$value){
+        foreach ($panier as $key => $value) {
             $orderDetail = new OrdersDetails();
-            $prodid  = $produit->find($key);
+            $prodid = $produit->find($key);
             $panier[$key]['prix'] = $prodid->getPrice();
             $panier[$key]['stock'] = $prodid->getStock();
-          //  dd($key);
+            //  dd($key);
 
             $orderDetail->setProduct($prodid);
             $orderDetail->setQuantite($panier[$key]['qte']);
@@ -75,10 +75,13 @@ class PaiementController extends AbstractController
             $orderDetail->setOrders($orders);
             $manager->persist($orderDetail);
 
-           // $manager->clear();
+            // $manager->clear();
         }
         $manager->flush();
         $html = $this->renderView('paiement/confirmation_email.html.twig', array(
+            'order' => $orders
+        ));
+        $text = $this->renderView('paiement/confirmation_email_text.html.twig', array(
             'order' => $orders
         ));
         $session->set('panier', []);
@@ -90,12 +93,11 @@ class PaiementController extends AbstractController
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
             ->subject('commande confirmé')
-
-            ->html($html)
-        ;
+            ->text($text)
+            ->html($html);
 
         $mailer->send($email);
-        return  $this->redirectToRoute('commandeTerminer');
+        return $this->redirectToRoute('commandeTerminer');
 //        return $this->render('paiement/index.html.twig', [
 //            'panier' => $panier,
 //            'menu' => $cat->findAll(),
