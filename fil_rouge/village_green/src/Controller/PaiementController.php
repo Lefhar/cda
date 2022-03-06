@@ -12,9 +12,12 @@ use App\Repository\OrdersDetailsRepository;
 use App\Repository\OrdersRepository;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -37,7 +40,7 @@ class PaiementController extends AbstractController
      * @Route("/paiementvalider", name="OrderComplete")
      */
     public function OrderComplete(SessionInterface $session, CustomersRepository  $client,LiveRepository $habiter,
-                                   EntityManagerInterface $manager, ProductsRepository $produit): Response
+                                   EntityManagerInterface $manager, ProductsRepository $produit,MailerInterface $mailer): Response
     {
 
 
@@ -75,7 +78,23 @@ class PaiementController extends AbstractController
            // $manager->clear();
         }
         $manager->flush();
+        $html = $this->renderView('paiement/confirmation_email.html.twig', array(
+            'order' => $orders
+        ));
         $session->set('panier', []);
+        $email = ((new TemplatedEmail()))
+            ->from('contact@lefebvreharold.fr')
+            ->to($this->getUser()->getUserIdentifier())
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('commande confirmé')
+
+            ->html($html)
+        ;
+
+        $mailer->send($email);
         return  $this->redirectToRoute('commandeTerminer');
 //        return $this->render('paiement/index.html.twig', [
 //            'panier' => $panier,

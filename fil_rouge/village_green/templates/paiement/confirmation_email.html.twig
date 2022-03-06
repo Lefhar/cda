@@ -1,0 +1,12 @@
+<h1>Commande confirmé! </h1>
+
+<p>
+    Bonjour {{ order.customer.gender|capitalize }} {{ order.customer.firstname|capitalize }} {{ order.customer.lastname|capitalize }}
+    Veuillez trouvé  votre facture:
+    <a href="{{ app.request.getSchemeAndHttpHost() }}{{ path('facturePdf',{order:order.id}) }}">ici</a>.
+</p>
+
+<p>
+    Cordialement!
+    Village green
+</p>
