@@ -88,11 +88,8 @@ class PaiementController extends AbstractController
         $email = ((new TemplatedEmail()))
             ->from('contact@lefebvreharold.fr')
             ->to($this->getUser()->getUserIdentifier())
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('commande confirmé')
+
+            ->subject('Commande confirmé')
             ->text($text)
             ->html($html);
 
