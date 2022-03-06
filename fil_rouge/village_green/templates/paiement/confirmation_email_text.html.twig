@@ -2,7 +2,7 @@ Commande confirmé!
 
 
     Bonjour {{ order.customer.gender|capitalize }} {{ order.customer.firstname|capitalize }} {{ order.customer.lastname|capitalize }}
-    Veuillez trouvé  votre facture: {{ app.request.getSchemeAndHttpHost() }}{{ path('facturePdf',{order:order.id}) }} .
+    Veuillez trouver  votre facture: {{ app.request.getSchemeAndHttpHost() }}{{ path('facturePdf',{order:order.id}) }} .
 
 
     Cordialement Village green !
