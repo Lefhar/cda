@@ -7,24 +7,22 @@ const App = (props) => {
     const handleChangesElement = (evt) => {
 
         setElement(evt.target.value);
-        if(element.length>= 2) {
-            handleChangeArray()
-        }        setListes([]);
+        if (evt.target.value.length >= 2) {
+            handleChangeArray(evt.target.value)
+        }
 
     }
 
-    const handleChangeArray = () =>{
-        let url = "http://api.themoviedb.org/3/search/movie?api_key=f33cd318f5135dba306176c13104506a&query=" + element
+    const handleChangeArray = (v) => {
+        let url = "http://api.themoviedb.org/3/search/movie?api_key=f33cd318f5135dba306176c13104506a&query=" + v
 
 
         fetch(url).then(response => response.json().then(data => {
                 console.log(data)
-                setListes((listes) => listes.concat(data.results))
+                setListes(data.results)
 
 
             }
-
-
         ))
         console.log(url)
 
@@ -32,21 +30,27 @@ const App = (props) => {
 
 
     return (
-        <div>
+        <>
+
 
             <input type="text" value={element} onChange={handleChangesElement}/>
 
 
+    <div>
+            {listes.map((a, i) => (
+                <>   {a.poster_path ?
 
-                {listes.map((a, i) => (
-                    <div key={i}>
-                        <img src={"http://image.tmdb.org/t/p/w185"+a.poster_path} alt={a.original_title}/> {a.original_title}
 
-                    </div>
-                ))}
-        </div>
-    )
-        ;
+                    <img key={i} src={"http://image.tmdb.org/t/p/w185" + a.poster_path}
+                         alt={a.original_title} title={a.original_title}/>
+                    : <img key={i} src=""/>
+
+                }</>
+
+            ))}
+    </div>
+        </>
+    );
 }
 
 export {App};
