@@ -6,6 +6,7 @@ use App\Repository\CategoriesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategoriesRepository::class)
@@ -25,6 +26,7 @@ class Categories
     private $name;
 
     /**
+     * @Groups("Categories")
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="Parent")
      */
     private $souscat;
