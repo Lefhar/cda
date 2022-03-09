@@ -35,13 +35,13 @@ class Categories
 
     /**
      * @ORM\OneToMany(targetEntity=Categories::class, mappedBy="souscat")
+       * @Groups({"showcat"})
      */
     private $Parent;
 
     /**
      * @ORM\OneToMany(targetEntity=Products::class, mappedBy="catprod")
      *
-
      */
     private $parentcat;
 
