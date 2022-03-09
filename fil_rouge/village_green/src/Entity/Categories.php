@@ -17,17 +17,19 @@ class Categories
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"show_product","showcat"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_product","showcat"})
      */
     private $name;
 
     /**
-     * @Groups("Categories")
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="Parent")
+     *
      */
     private $souscat;
 
@@ -38,6 +40,8 @@ class Categories
 
     /**
      * @ORM\OneToMany(targetEntity=Products::class, mappedBy="catprod")
+     *
+
      */
     private $parentcat;
 
@@ -45,7 +49,6 @@ class Categories
      * @ORM\Column(type="string", length=255)
      */
     private $picture;
-
 
 
     public function __construct()
@@ -155,7 +158,8 @@ class Categories
         return $this;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 }

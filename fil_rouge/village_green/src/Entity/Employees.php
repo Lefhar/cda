@@ -6,6 +6,7 @@ use App\Repository\EmployeesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=EmployeesRepository::class)
@@ -16,11 +17,13 @@ class Employees
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @groups({"show_product","showemp"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"show_product","showemp"})
      */
     private $firstname;
 

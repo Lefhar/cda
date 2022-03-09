@@ -17,7 +17,7 @@ class Products
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-      * @Groups({"show_product", "list_product"})
+      * @Groups({"show_product"})
      */
     private $id;
 
@@ -35,44 +35,51 @@ class Products
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_product"})
      */
     private $photo;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_product"})
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"show_product"})
      */
     private $ref;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
+     * @Groups({"show_product"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"show_product"})
      */
     private $status;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"show_product"})
      */
     private $stock;
 
     /**
-     * @Groups("Products")
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="parentcat")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"show_product"})
      */
     private $catprod;
 
     /**
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     *  @Groups({"show_product"})
      */
     private $emp;
 

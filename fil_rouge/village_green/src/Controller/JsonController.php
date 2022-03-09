@@ -3,15 +3,11 @@
 namespace App\Controller;
 
 use App\Repository\CategoriesRepository;
+use App\Repository\EmployeesRepository;
 use App\Repository\ProductsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class JsonController extends AbstractController
@@ -19,11 +15,10 @@ class JsonController extends AbstractController
     /**
      * @Route("/json/produits", name="json")
      */
-    public function produits(ProductsRepository $repo,SerializerInterface  $serializer)
+    public function produits(ProductsRepository $repo,SerializerInterface  $serializer): Response
     {
 
         $produit = $repo->findAll();
-       // $postnormaliser = $normalizable->normalize($produit,'json');
 
 
         $response = $serializer->serialize(
@@ -32,14 +27,44 @@ class JsonController extends AbstractController
             ['groups' => 'show_product']
         );
 
-     //   $response = $serializer->serialize($repo->findAll(),'json', ['groups' => ['normal']]);
-   //     $response = $serializer->serialize($postnormaliser,'json', ['groups' => ['normal']]);
-        //dd($response);
-        return new Response($response);
-      //  return $response;
-//        dump($repo->findAll());
-     //   return new JsonResponse([$repo->findAll()]);
-//        return $this->json([
-//            $serializer->encode($repo->findAll(),'json') ]);
+        return new Response($response, 200, ["Content-Type"=>"application/json"]);
+
+    }
+
+    /**
+     * @Route("/json/categorie", name="categorie")
+     */
+    public function categorie(CategoriesRepository $repo,SerializerInterface  $serializer): Response
+    {
+
+        $categorie = $repo->findAll();
+
+
+        $response = $serializer->serialize(
+            $categorie,
+            'json',
+            ['groups' => 'showcat']
+        );
+
+        return new Response($response, 200, ["Content-Type"=>"application/json"]);
+
+    }
+    /**
+     * @Route("/json/employee", name="employee")
+     */
+    public function employee(EmployeesRepository $repo,SerializerInterface  $serializer): Response
+    {
+
+        $employee = $repo->findAll();
+
+
+        $response = $serializer->serialize(
+            $employee,
+            'json',
+            ['groups' => 'showemp']
+        );
+
+        return new Response($response, 200, ["Content-Type"=>"application/json"]);
+
     }
 }
