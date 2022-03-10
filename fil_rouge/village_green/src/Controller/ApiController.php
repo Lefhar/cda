@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Products;
 use App\Repository\CategoriesRepository;
 use App\Repository\EmployeesRepository;
 use App\Repository\ProductsRepository;
@@ -11,17 +12,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
+
+
+
     /**
-     * @Route("/json/produits", name="json")
+     * @Route("/api/produits", name="json_produits_liste",  methods={"get"})
      */
     public function produits(ProductsRepository $repo): Response
     {
 
         return $this->json($repo->findAll(), 200, [], ['groups' => 'show_product']);
     }
-
     /**
-     * @Route("/json/categorie", name="categorie")
+     * @Route("/api/produits/{id}", name="json_produits",  methods={"get"})
+     */
+    public function produit(Products $id): Response
+    {
+
+        return $this->json($id, 200, [], ['groups' => 'show_product']);
+    }
+    /**
+     * @Route("/api/categorie", name="categorie", methods={"get"})
      */
     public function categorie(CategoriesRepository $repo): Response
     {
@@ -29,7 +40,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/json/employee", name="employee")
+     * @Route("/api/employee", name="employee", methods={"get"})
      */
     public function employee(EmployeesRepository $repo): Response
     {
