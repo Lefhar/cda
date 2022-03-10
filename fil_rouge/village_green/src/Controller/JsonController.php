@@ -19,10 +19,7 @@ class JsonController extends AbstractController
     public function produits(ProductsRepository $repo): Response
     {
 
-        $produit = $repo->findAll();
-
-
-        return $this->json($produit,200,[],['groups' => 'show_product']);
+        return $this->json($repo->findAll(), 200, [], ['groups' => 'show_product']);
     }
 
     /**
@@ -30,22 +27,16 @@ class JsonController extends AbstractController
      */
     public function categorie(CategoriesRepository $repo): Response
     {
-
-        $categorie = $repo->findAll();
-
-        return $this->json($categorie,200,[],['groups' => 'showcat']);
+        return $this->json($repo->findAll(), 200, [], ['groups' => 'showcat']);
     }
+
     /**
      * @Route("/json/employee", name="employee")
      */
     public function employee(EmployeesRepository $repo): Response
     {
 
-        $employee = $repo->findAll();
-
-
-        return $this->json($employee,200,[],['groups' => 'showemp']);
-
+        return $this->json($repo->findAll(), 200, [], ['groups' => 'showemp']);
 
     }
 }
