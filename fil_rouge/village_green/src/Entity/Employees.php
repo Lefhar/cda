@@ -29,11 +29,13 @@ class Employees
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @groups({"show_product","showemp"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @groups({"show_product","showemp"})
      */
     private $tel;
 
@@ -153,7 +155,9 @@ class Employees
 
         return $this;
     }
-    public function __toString() {
+
+    public function __toString()
+    {
         return $this->lastname;
     }
 }

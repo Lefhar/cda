@@ -6,6 +6,7 @@ use App\Repository\CategoriesRepository;
 use App\Repository\EmployeesRepository;
 use App\Repository\ProductsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -27,7 +28,7 @@ class JsonController extends AbstractController
             ['groups' => 'show_product']
         );
 
-        return new Response($response, 200, ["Content-Type"=>"application/json"]);
+        return new JsonResponse($response, 200, [],true);
 
     }
 
@@ -46,7 +47,7 @@ class JsonController extends AbstractController
             ['groups' => 'showcat']
         );
 
-        return new Response($response, 200, ["Content-Type"=>"application/json"]);
+        return new JsonResponse($response, 200, [],true);
 
     }
     /**
@@ -64,7 +65,7 @@ class JsonController extends AbstractController
             ['groups' => 'showemp']
         );
 
-        return new Response($response, 200, ["Content-Type"=>"application/json"]);
+        return new JsonResponse($response, 200, [],true);
 
     }
 }
