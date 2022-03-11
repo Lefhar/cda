@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductsRepository::class)
@@ -18,54 +19,70 @@ class Products
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
       * @Groups({"show_product"})
+     * @Assert\NotBlank
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", length=65535)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $photo;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $label;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $ref;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=1)
      */
     private $status;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"show_product"})
+     * @Assert\NotBlank
      */
     private $stock;
 
@@ -73,6 +90,7 @@ class Products
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="parentcat")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"show_product"})
+     * @Assert\NotBlank
      */
     private $catprod;
 
@@ -80,6 +98,8 @@ class Products
      * @ORM\ManyToOne(targetEntity=Employees::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      *  @Groups({"show_product"})
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $emp;
 

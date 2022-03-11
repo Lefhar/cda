@@ -6,6 +6,7 @@ use App\Entity\Products;
 use App\Repository\CategoriesRepository;
 use App\Repository\EmployeesRepository;
 use App\Repository\ProductsRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ApiController extends AbstractController
 {
@@ -40,13 +42,22 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
      */
-    public function PutProduit(Request $request, SerializerInterface $serializer): JsonResponse
+    public function PutProduit(Request $request, SerializerInterface $serializer,Products $id, EntityManagerInterface $em,ValidatorInterface $validator): JsonResponse
     {
         try {
 
             $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
           //  $post = json_decode($request->getContent());
          //   dd($post);
+            $error = $validator->validate($post);
+            if(count($error)>0){
+                return $this->json($error,400
+                );
+
+            }
+            $em->persist($post);
+            $em->flush();
+
             return $this->json($post, 201, [], []);
         } catch (NotEncodableValueException $e) {
             return $this->json([
