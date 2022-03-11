@@ -8,6 +8,7 @@ use App\Repository\EmployeesRepository;
 use App\Repository\ProductsRepository;
 use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +40,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
      */
-    public function PutProduit(Request $request, SerializerInterface $serializer): \Symfony\Component\HttpFoundation\JsonResponse
+    public function PutProduit(Request $request, SerializerInterface $serializer): JsonResponse
     {
         try {
 
