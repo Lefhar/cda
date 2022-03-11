@@ -39,17 +39,41 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
      */
-    public function PutProduit(Products $id, Request $request, SerializerInterface $serializer): \Symfony\Component\HttpFoundation\JsonResponse
+    public function PutProduit(Request $request, SerializerInterface $serializer): \Symfony\Component\HttpFoundation\JsonResponse
     {
         try {
 
-            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+//            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+            $post = json_decode($request->getContent());
+            dd($post);
             return $this->json($post, 201, [], ['groups' => "show_products"]);
         } catch (NotEncodableValueException $e) {
             return $this->json([
                 'status' => 400,
             'message'=>$e->getMessage()
                 ],400
+            );
+        }
+
+//        re// dd($post);
+    }
+
+    /**
+     * @Route("/api/files/{table}/{id}", name="put_produits",  methods={"put"})
+     */
+    public function PutProduit2(Request $request, SerializerInterface $serializer, $table, $id): \Symfony\Component\HttpFoundation\JsonResponse
+    {
+        try {
+
+//            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+            $post = json_decode($request->getContent());
+            dd($post);
+            return $this->json($post, 201, [], ['groups' => "show_products"]);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message'=>$e->getMessage()
+            ],400
             );
         }
 
