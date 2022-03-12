@@ -44,54 +44,67 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="post_produits",  methods={"post"})
      */
-    public function InsertProduit(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,ValidatorInterface $validator
-                                ): JsonResponse
+    public function InsertProduit(Request $request, EntityManagerInterface $em,
+                                  ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
 
-            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
-          //  $post = json_decode($request->getContent());
-//            dd($post);
+            $post = json_decode($request->getContent());
+
             $error = $validator->validate($post);
-            if(count($error)>0){
-                return $this->json($error,400
+            if (count($error) > 0) {
+                return $this->json($error, 400
                 );
 
             }
-//            $categorie = $cat->find($)
-//            $post->setCatprod();
-            $em->persist($post);
+            $produit= new Products();
+            $categorie = $cat->find($post->catprod->id);
+            $employee = $emp->find($post->emp->id);
+            $produit->setName($post->name);
+            $produit->setDescription($post->description);
+            $produit->setPhoto($post->photo);
+            $produit->setLabel($post->label);
+            $produit->setRef($post->ref);
+            $produit->setPrice($post->price);
+            $produit->setStatus($post->status);
+            $produit->setStock($post->stock);
+            $produit->setCatprod($categorie);
+            $produit->setEmp($employee);
+
+            $em->persist($produit);
             $em->flush();
 
             return $this->json($post, 201, [], []);
         } catch (NotEncodableValueException $e) {
             return $this->json([
                 'status' => 400,
-            'message'=>$e->getMessage()
-                ],400
+                'message' => $e->getMessage()
+            ], 400
             );
         }
 
     }
+
     /**
      * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
      */
-    public function UpdateProduit(Request $request, SerializerInterface $serializer,Products $id, EntityManagerInterface $em,ValidatorInterface $validator,CategoriesRepository $cat,EmployeesRepository $emp): JsonResponse
+    public function UpdateProduit(Request $request, SerializerInterface $serializer, Products $id, EntityManagerInterface $em,
+                                  ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
             $post = json_decode($request->getContent());
-      //      $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+            //      $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
             //  $post = json_decode($request->getContent());
             //   dd($post);
             $error = $validator->validate($post);
-            if(count($error)>0){
-                return $this->json($error,400
+            if (count($error) > 0) {
+                return $this->json($error, 400
                 );
 
             }
             $categorie = $cat->find($post->catprod->id);
             $employee = $emp->find($post->emp->id);
-          //  dd($cat);
+            //  dd($cat);
 //            dd($teste->name);
             $id->setName($post->name);
             $id->setDescription($post->description);
@@ -109,8 +122,8 @@ class ApiController extends AbstractController
         } catch (NotEncodableValueException $e) {
             return $this->json([
                 'status' => 400,
-                'message'=>$e->getMessage()
-            ],400
+                'message' => $e->getMessage()
+            ], 400
             );
         }
 
