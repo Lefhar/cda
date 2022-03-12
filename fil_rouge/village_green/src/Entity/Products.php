@@ -18,8 +18,7 @@ class Products
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-      * @Groups({"show_product"})
-     * @Assert\NotBlank
+     * @Groups({"show_product"})
      */
     private $id;
 
