@@ -131,23 +131,26 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/files/{table}/{id}", name="put_produits",  methods={"put"})
+     * @Route("/api/files/{table}/{id}", name="UploadFile",  methods={"put"})
      */
-    public function PutProduit2(Request $request, SerializerInterface $serializer, $table, $id): JsonResponse
+    public function UploadFile(Request $request, SerializerInterface $serializer, $table, $id, CategoriesRepository $cat,ProductsRepository $prod): JsonResponse
     {
         switch ($table) {
 
             case 'categorie';
-                $mytable = new Categories();
+                $mytable = $cat->find($id);
                 break;
             case 'produit';
-                $mytable = new Products();
+                $mytable =  $prod->find($id);
                 break;
             default;
-                $mytable = new Products();
+                $mytable =  $prod->find($id);
 
         }
         try {
+
+            dump($_SERVER['HTTP_CONTENT_TYPE']);
+            dump($_FILES);
             dump($request->files->get('photo'));
             dump($request);
             //dump($request->getContent());
