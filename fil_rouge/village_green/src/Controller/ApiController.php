@@ -76,11 +76,11 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
      */
-    public function UpdateProduit(Request $request, SerializerInterface $serializer,Products $id, EntityManagerInterface $em,ValidatorInterface $validator): JsonResponse
+    public function UpdateProduit(Request $request, SerializerInterface $serializer,Products $id, EntityManagerInterface $em,ValidatorInterface $validator,CategoriesRepository $cat,EmployeesRepository $emp): JsonResponse
     {
         try {
-
-            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+            $post = json_decode($request->getContent());
+      //      $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
             //  $post = json_decode($request->getContent());
             //   dd($post);
             $error = $validator->validate($post);
@@ -89,6 +89,20 @@ class ApiController extends AbstractController
                 );
 
             }
+            $categorie = $cat->find($post->catprod->id);
+            $employee = $emp->find($post->emp->id);
+          //  dd($cat);
+//            dd($teste->name);
+            $id->setName($post->name);
+            $id->setDescription($post->description);
+            $id->setPhoto($post->photo);
+            $id->setLabel($post->label);
+            $id->setRef($post->ref);
+            $id->setPrice($post->price);
+            $id->setStatus($post->status);
+            $id->setStock($post->stock);
+            $id->setCatprod($categorie);
+            $id->setEmp($employee);
             $em->flush();
 
             return $this->json($post, 201, [], []);
