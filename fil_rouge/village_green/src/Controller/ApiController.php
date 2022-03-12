@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Categories;
 use App\Entity\Products;
 use App\Repository\CategoriesRepository;
 use App\Repository\EmployeesRepository;
@@ -44,7 +45,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="post_produits",  methods={"post"})
      */
-    public function InsertProduit(Request $request, EntityManagerInterface $em,
+    public function InsertProduit(Request            $request, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
@@ -57,7 +58,7 @@ class ApiController extends AbstractController
                 );
 
             }
-            $produit= new Products();
+            $produit = new Products();
             $categorie = $cat->find($post->catprod->id);
             $employee = $emp->find($post->emp->id);
             $produit->setName($post->name);
@@ -88,7 +89,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
      */
-    public function UpdateProduit(Request $request, SerializerInterface $serializer, Products $id, EntityManagerInterface $em,
+    public function UpdateProduit(Request            $request, SerializerInterface $serializer, Products $id, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
@@ -128,27 +129,43 @@ class ApiController extends AbstractController
         }
 
     }
-//    /**
-//     * @Route("/api/files/{table}/{id}", name="put_produits",  methods={"put"})
-//     */
-//    public function PutProduit2(Request $request, SerializerInterface $serializer, $table, $id): \Symfony\Component\HttpFoundation\JsonResponse
-//    {
-//        try {
-//
-////            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
-//            $post = json_decode($request->getContent());
-//            dd($post);
-//            return $this->json($post, 201, [], ['groups' => "show_products"]);
-//        } catch (NotEncodableValueException $e) {
-//            return $this->json([
-//                'status' => 400,
-//                'message'=>$e->getMessage()
-//            ],400
-//            );
-//        }
-//
-////        re// dd($post);
-//    }
+
+    /**
+     * @Route("/api/files/{table}/{id}", name="put_produits",  methods={"put"})
+     */
+    public function PutProduit2(Request $request, SerializerInterface $serializer, $table, $id): JsonResponse
+    {
+        switch ($table) {
+
+            case 'categorie';
+                $mytable = new Categories();
+                break;
+            case 'produit';
+                $mytable = new Products();
+                break;
+            default;
+                $mytable = new Products();
+
+        }
+        try {
+            dump($request->files->get('photo'));
+            dump($request);
+            //dump($request->getContent());
+            dd($request->files->get('photo'));
+//            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+            $post = json_decode($request->getContent());
+            dd($post);
+            return $this->json($post, 201, [], ['groups' => "show_products"]);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400
+            );
+        }
+
+//        re// dd($post);
+    }
 
     /**
      * @Route("/api/categorie", name="categorie", methods={"get"})
