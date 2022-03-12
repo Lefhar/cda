@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Products;
 use App\Repository\CategoriesRepository;
 use App\Repository\EmployeesRepository;
+use App\Repository\LiveRepository;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Serializer;
@@ -39,22 +40,26 @@ class ApiController extends AbstractController
         return $this->json($id, 200, [], ['groups' => 'show_product']);
     }
 
+
     /**
-     * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
+     * @Route("/api/produits/{id}", name="post_produits",  methods={"post"})
      */
-    public function PutProduit(Request $request, SerializerInterface $serializer,Products $id, EntityManagerInterface $em,ValidatorInterface $validator): JsonResponse
+    public function InsertProduit(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,ValidatorInterface $validator
+                                ): JsonResponse
     {
         try {
 
             $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
           //  $post = json_decode($request->getContent());
-         //   dd($post);
+//            dd($post);
             $error = $validator->validate($post);
             if(count($error)>0){
                 return $this->json($error,400
                 );
 
             }
+//            $categorie = $cat->find($)
+//            $post->setCatprod();
             $em->persist($post);
             $em->flush();
 
@@ -67,9 +72,35 @@ class ApiController extends AbstractController
             );
         }
 
-//        re// dd($post);
     }
+    /**
+     * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
+     */
+    public function UpdateProduit(Request $request, SerializerInterface $serializer,Products $id, EntityManagerInterface $em,ValidatorInterface $validator): JsonResponse
+    {
+        try {
 
+            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
+            //  $post = json_decode($request->getContent());
+            //   dd($post);
+            $error = $validator->validate($post);
+            if(count($error)>0){
+                return $this->json($error,400
+                );
+
+            }
+            $em->flush();
+
+            return $this->json($post, 201, [], []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message'=>$e->getMessage()
+            ],400
+            );
+        }
+
+    }
 //    /**
 //     * @Route("/api/files/{table}/{id}", name="put_produits",  methods={"put"})
 //     */
