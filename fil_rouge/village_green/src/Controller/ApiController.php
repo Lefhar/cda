@@ -131,34 +131,34 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/files/{table}/{id}", name="UploadFile",  methods={"put"})
+     * @Route("/api/files/{table}/{id}", name="UploadFile",  methods={"POST"})
      */
-    public function UploadFile(Request $request, SerializerInterface $serializer, $table, $id, CategoriesRepository $cat,ProductsRepository $prod): JsonResponse
+    public function UploadFile(Request $request, SerializerInterface $serializer, $table, $id, CategoriesRepository $cat, ProductsRepository $prod): JsonResponse
     {
         switch ($table) {
 
             case 'categorie';
-                $mytable = $cat->find($id);
+                $photo = $cat->find($id)->getPicture();
                 break;
             case 'produit';
-                $mytable =  $prod->find($id);
+                $photo = $prod->find($id)->getPhoto();
+
                 break;
             default;
-                $mytable =  $prod->find($id);
+                $photo = $prod->find($id)->getPhoto();
 
         }
         try {
-
-            dump($_SERVER['HTTP_CONTENT_TYPE']);
-            dump($_FILES);
-            dump($request->files->get('photo'));
-            dump($request);
-            //dump($request->getContent());
-            dd($request->files->get('photo'));
-//            $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
-            $post = json_decode($request->getContent());
-            dd($post);
-            return $this->json($post, 201, [], ['groups' => "show_products"]);
+            $fichier = $request->files->get('photo');
+            $aMimeTypes = array("image/gif", "image/jpeg", "image/jpg", "image/png", "image/x-png", "image/tiff");
+            if (in_array($fichier->getClientmimeType(), $aMimeTypes)) {
+                if ($fichier->move('assets/src/', $photo)) {
+                    return $this->json(["id" => $id, "table" => $table, "photo" => $photo], 201, [], ['groups' => "show_products"]);
+                }
+            } else {
+                return $this->json(["id" => $id, "table" => $table, "photo" => $photo, 'status' => 400,
+                    'message' => "fichier non autorisé"], 400, []);
+            }
         } catch (NotEncodableValueException $e) {
             return $this->json([
                 'status' => 400,
@@ -166,8 +166,8 @@ class ApiController extends AbstractController
             ], 400
             );
         }
-
-//        re// dd($post);
+        return $this->json([ 'status' => 400,
+            'message' => "fichier non autorisé ou non reçu"], 400, []);
     }
 
     /**
