@@ -83,7 +83,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("produits", name="post_produits",  methods={"post"})
+     * @Route("produits", name="InsertProduit",  methods={"post"})
      * @IsGranted("ROLE_ADMIN")
      */
     public function InsertProduit(Request            $request, EntityManagerInterface $em,
@@ -126,12 +126,13 @@ class ApiController extends AbstractController
         }
 
     }
- /**
+
+    /**
      * @Route("categorie", name="InsertCategorie",  methods={"post"})
      * @IsGranted("ROLE_ADMIN")
      */
     public function InsertCategorie(Request            $request, EntityManagerInterface $em,
-                                  ValidatorInterface $validator, CategoriesRepository $cat): JsonResponse
+                                    ValidatorInterface $validator, CategoriesRepository $cat): JsonResponse
     {
         try {
 
@@ -144,10 +145,10 @@ class ApiController extends AbstractController
 
             }
             $categorie = new Categories();
-            if($post->parent){
+            if ($post->parent) {
                 $parent = $cat->find($post->parent);
 
-            }else{
+            } else {
                 $parent = null;
             }
 
@@ -171,17 +172,54 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("produits/{id}", name="put_produits",  methods={"put"})
+     * @Route("categorie/{id}", name="UpdateCategorie",  methods={"put"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function UpdateProduit(Request            $request, SerializerInterface $serializer, Products $id, EntityManagerInterface $em,
+    public function UpdateCategorie(Request            $request, Categories $id, EntityManagerInterface $em,
+                                    ValidatorInterface $validator, CategoriesRepository $cat): JsonResponse
+    {
+        try {
+            $post = json_decode($request->getContent());
+
+            $error = $validator->validate($post);
+            if (count($error) > 0) {
+                return $this->json($error, 400
+                );
+
+            }
+            if ($post->parent) {
+                $parent = $cat->find($post->parent);
+
+            } else {
+                $parent = null;
+            }
+
+            $id->setName($post->name);
+            $id->setSouscat($parent);
+            $id->setPicture($post->photo);
+            $em->flush();
+
+            return $this->json($post, 201, [], []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400
+            );
+        }
+
+    }
+
+    /**
+     * @Route("produits/{id}", name="UpdateProduit",  methods={"put"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function UpdateProduit(Request            $request, Products $id, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
             $post = json_decode($request->getContent());
-            //      $post = $serializer->deserialize($request->getContent(), Products::class, 'json');
-            //  $post = json_decode($request->getContent());
-            //   dd($post);
+
             $error = $validator->validate($post);
             if (count($error) > 0) {
                 return $this->json($error, 400
