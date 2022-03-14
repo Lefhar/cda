@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Categories;
+use App\Entity\Employees;
 use App\Entity\Products;
 use App\Repository\CategoriesRepository;
 use App\Repository\EmployeesRepository;
@@ -10,6 +11,7 @@ use App\Repository\LiveRepository;
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Serializer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,21 +21,24 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @Route("/api/")
+ */
 class ApiController extends AbstractController
 {
 
 
     /**
-     * @Route("/api/produits", name="json_produits_liste",  methods={"get"})
+     * @Route("produits", name="ProduitsListe", methods={"get"})
      */
-    public function produits(ProductsRepository $repo): Response
+    public function ProduitsListe(ProductsRepository $repo): Response
     {
 
         return $this->json($repo->findAll(), 200, [], ['groups' => 'show_product']);
     }
 
     /**
-     * @Route("/api/produits/{id}", name="json_produits",  methods={"get"})
+     * @Route("produits/{id}", name="produit",  methods={"get"})
      */
     public function Produit(Products $id): Response
     {
@@ -41,9 +46,45 @@ class ApiController extends AbstractController
         return $this->json($id, 200, [], ['groups' => 'show_product']);
     }
 
+    /**
+     * @Route("categorie", name="CategorieListe", methods={"get"})
+     */
+    public function CategorieListe(CategoriesRepository $repo): Response
+    {
+        return $this->json($repo->findAll(), 200, [], ['groups' => 'showcat']);
+    }
 
     /**
-     * @Route("/api/produits/{id}", name="post_produits",  methods={"post"})
+     * @Route("categorie/{id}", name="categorie", methods={"get"})
+     */
+    public function Categorie(Categories $id): Response
+    {
+        return $this->json($id, 200, [], ['groups' => 'showcat']);
+    }
+
+    /**
+     * @Route("employee", name="EmployeeListe", methods={"get"})
+     */
+    public function EmployeeListe(EmployeesRepository $repo): Response
+    {
+
+        return $this->json($repo->findAll(), 200, [], ['groups' => 'showemp']);
+
+    }
+
+    /**
+     * @Route("employee/{id}", name="employee", methods={"get"})
+     */
+    public function Employee(Employees $id): Response
+    {
+
+        return $this->json($id, 200, [], ['groups' => 'showemp']);
+
+    }
+
+    /**
+     * @Route("produits", name="post_produits",  methods={"post"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function InsertProduit(Request            $request, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
@@ -85,9 +126,53 @@ class ApiController extends AbstractController
         }
 
     }
+ /**
+     * @Route("categorie", name="InsertCategorie",  methods={"post"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function InsertCategorie(Request            $request, EntityManagerInterface $em,
+                                  ValidatorInterface $validator, CategoriesRepository $cat): JsonResponse
+    {
+        try {
+
+            $post = json_decode($request->getContent());
+
+            $error = $validator->validate($post);
+            if (count($error) > 0) {
+                return $this->json($error, 400
+                );
+
+            }
+            $categorie = new Categories();
+            if($post->parent){
+                $parent = $cat->find($post->parent);
+
+            }else{
+                $parent = null;
+            }
+
+            $categorie->setName($post->name);
+            $categorie->setSouscat($parent);
+            $categorie->setPicture($post->photo);
+
+
+            $em->persist($categorie);
+            $em->flush();
+
+            return $this->json($post, 201, [], []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400
+            );
+        }
+
+    }
 
     /**
-     * @Route("/api/produits/{id}", name="put_produits",  methods={"put"})
+     * @Route("produits/{id}", name="put_produits",  methods={"put"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function UpdateProduit(Request            $request, SerializerInterface $serializer, Products $id, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
@@ -131,7 +216,8 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/files/{table}/{id}", name="UploadFile",  methods={"POST"})
+     * @Route("files/{table}/{id}", name="UploadFile",  methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function UploadFile(Request $request, SerializerInterface $serializer, $table, $id, CategoriesRepository $cat, ProductsRepository $prod): JsonResponse
     {
@@ -166,25 +252,9 @@ class ApiController extends AbstractController
             ], 400
             );
         }
-        return $this->json([ 'status' => 400,
+        return $this->json(['status' => 400,
             'message' => "fichier non autorisé ou non reçu"], 400, []);
     }
 
-    /**
-     * @Route("/api/categorie", name="categorie", methods={"get"})
-     */
-    public function Categorie(CategoriesRepository $repo): Response
-    {
-        return $this->json($repo->findAll(), 200, [], ['groups' => 'showcat']);
-    }
 
-    /**
-     * @Route("/api/employee", name="employee", methods={"get"})
-     */
-    public function Employee(EmployeesRepository $repo): Response
-    {
-
-        return $this->json($repo->findAll(), 200, [], ['groups' => 'showemp']);
-
-    }
 }
