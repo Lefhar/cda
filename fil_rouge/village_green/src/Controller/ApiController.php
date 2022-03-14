@@ -214,7 +214,7 @@ class ApiController extends AbstractController
      * @Route("produits/{id}", name="UpdateProduit",  methods={"put"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function UpdateProduit(Request            $request, Products $id, EntityManagerInterface $em,
+    public function UpdateProduit(Request $request, Products $id, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
@@ -228,8 +228,7 @@ class ApiController extends AbstractController
             }
             $categorie = $cat->find($post->catprod->id);
             $employee = $emp->find($post->emp->id);
-            //  dd($cat);
-//            dd($teste->name);
+
             $id->setName($post->name);
             $id->setDescription($post->description);
             $id->setPhoto($post->photo);
@@ -240,6 +239,73 @@ class ApiController extends AbstractController
             $id->setStock($post->stock);
             $id->setCatprod($categorie);
             $id->setEmp($employee);
+            $em->flush();
+
+            return $this->json($post, 201, [], []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400
+            );
+        }
+
+    }
+    /**
+     * @Route("produits", name="DeleteProduit",  methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function DeleteProduit(Request $request, ProductsRepository $prod, EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
+    {
+        try {
+            $post = json_decode($request->getContent());
+
+            $error = $validator->validate($post);
+            if (count($error) > 0) {
+                return $this->json($error, 400
+                );
+
+            }
+            $product = $prod->find($post->id);
+            if(file_exists('assets/src/'.$product->getPhoto())){
+                unlink('assets/src/'.$product->getPhoto());
+            }
+            $em->remove($product);
+            $em->flush();
+
+            return $this->json($post, 201, [], []);
+        } catch (NotEncodableValueException $e) {
+            return $this->json([
+                'status' => 400,
+                'message' => $e->getMessage()
+            ], 400
+            );
+        }
+
+    }
+
+
+   /**
+     * @Route("categorie", name="DeleteCategorie",  methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function DeleteCategorie(Request $request, CategoriesRepository $cat,EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
+    {
+        try {
+            $post = json_decode($request->getContent());
+
+            $error = $validator->validate($post);
+            if (count($error) > 0) {
+                return $this->json($error, 400
+                );
+
+            }
+            $categorie = $cat->find($post->id);
+            if(file_exists('assets/src/'.$categorie->getPicture())){
+                unlink('assets/src/'.$categorie->getPicture());
+            }
+
+            $em->remove($categorie);
             $em->flush();
 
             return $this->json($post, 201, [], []);
