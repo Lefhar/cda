@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/api/")
+ * @api(name="api", description="api rest village green")
  */
 class ApiController extends AbstractController
 {
@@ -30,6 +31,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("produits", name="ProduitsListe", methods={"get"})
+     * @api( name="ProduitsListe", description="liste de produits en get")
      */
     public function ProduitsListe(ProductsRepository $repo): Response
     {
@@ -39,6 +41,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("produits/{id}", name="produit",  methods={"get"})
+     * @api( name="produit", description="detail du produit appelé par l'id")
      */
     public function Produit(Products $id): Response
     {
@@ -48,6 +51,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("categorie", name="CategorieListe", methods={"get"})
+     *  @api( name="liste des catégories", description="liste des catégorie en get")
      */
     public function CategorieListe(CategoriesRepository $repo): Response
     {
@@ -56,6 +60,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("categorie/{id}", name="categorie", methods={"get"})
+     *  @api( name="Catégorie", description="catégorie chargé par l'id en get")
      */
     public function Categorie(Categories $id): Response
     {
@@ -64,6 +69,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("employee", name="EmployeeListe", methods={"get"})
+     *  @api( name="Liste des employées", description="liste des employées en get")
      */
     public function EmployeeListe(EmployeesRepository $repo): Response
     {
@@ -74,6 +80,7 @@ class ApiController extends AbstractController
 
     /**
      * @Route("employee/{id}", name="employee", methods={"get"})
+     *  @api( name="Employée", description="employée chargé par l'id dans la méthode get")
      */
     public function Employee(Employees $id): Response
     {
@@ -85,6 +92,7 @@ class ApiController extends AbstractController
     /**
      * @Route("produits", name="InsertProduit",  methods={"post"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="Insert produit", description="Insertion du produit")
      */
     public function InsertProduit(Request            $request, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
@@ -130,6 +138,7 @@ class ApiController extends AbstractController
     /**
      * @Route("categorie", name="InsertCategorie",  methods={"post"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="Insert categorie", description="Insertion de la categorie")
      */
     public function InsertCategorie(Request            $request, EntityManagerInterface $em,
                                     ValidatorInterface $validator, CategoriesRepository $cat): JsonResponse
@@ -174,6 +183,7 @@ class ApiController extends AbstractController
     /**
      * @Route("categorie/{id}", name="UpdateCategorie",  methods={"put"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="update categorie", description="mise à jour de la categorie")
      */
     public function UpdateCategorie(Request            $request, Categories $id, EntityManagerInterface $em,
                                     ValidatorInterface $validator, CategoriesRepository $cat): JsonResponse
@@ -213,6 +223,7 @@ class ApiController extends AbstractController
     /**
      * @Route("produits/{id}", name="UpdateProduit",  methods={"put"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="update produit", description="mise à jour d'un produit")
      */
     public function UpdateProduit(Request            $request, Products $id, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
@@ -255,6 +266,7 @@ class ApiController extends AbstractController
     /**
      * @Route("produits", name="DeleteProduit",  methods={"DELETE"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="delete produit", description="suppréssion du produit")
      */
     public function DeleteProduit(Request $request, ProductsRepository $prod, EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
     {
@@ -289,6 +301,7 @@ class ApiController extends AbstractController
     /**
      * @Route("categorie", name="DeleteCategorie",  methods={"DELETE"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="delete categorie", description="suppréssion du produit")
      */
     public function DeleteCategorie(Request $request, CategoriesRepository $cat, EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
     {
@@ -323,8 +336,9 @@ class ApiController extends AbstractController
     /**
      * @Route("files/{table}/{id}", name="UploadFile",  methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
+     *  @api( name="upload du fichier ", description="upload de photo suivant la table")
      */
-    public function UploadFile(Request $request, SerializerInterface $serializer, $table, $id, CategoriesRepository $cat, ProductsRepository $prod): JsonResponse
+    public function UploadFile(Request $request, $table, $id, CategoriesRepository $cat, ProductsRepository $prod): JsonResponse
     {
         switch ($table) {
 
