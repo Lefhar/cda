@@ -116,7 +116,7 @@ class ApiController extends AbstractController
             $em->persist($produit);
             $em->flush();
 
-            return $this->json($post, 201, [], []);
+            return $this->json($produit, 201, [], ['groups' => "show_products"]);
         } catch (NotEncodableValueException $e) {
             return $this->json([
                 'status' => 400,
@@ -159,8 +159,8 @@ class ApiController extends AbstractController
 
             $em->persist($categorie);
             $em->flush();
-
-            return $this->json($post, 201, [], []);
+         //   $post['id'] = $categorie->getId();
+            return $this->json($categorie, 201, [],  ['groups' => "showcat"]);
         } catch (NotEncodableValueException $e) {
             return $this->json([
                 'status' => 400,
@@ -214,7 +214,7 @@ class ApiController extends AbstractController
      * @Route("produits/{id}", name="UpdateProduit",  methods={"put"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function UpdateProduit(Request $request, Products $id, EntityManagerInterface $em,
+    public function UpdateProduit(Request            $request, Products $id, EntityManagerInterface $em,
                                   ValidatorInterface $validator, CategoriesRepository $cat, EmployeesRepository $emp): JsonResponse
     {
         try {
@@ -251,6 +251,7 @@ class ApiController extends AbstractController
         }
 
     }
+
     /**
      * @Route("produits", name="DeleteProduit",  methods={"DELETE"})
      * @IsGranted("ROLE_ADMIN")
@@ -267,8 +268,8 @@ class ApiController extends AbstractController
 
             }
             $product = $prod->find($post->id);
-            if(file_exists('assets/src/'.$product->getPhoto())){
-                unlink('assets/src/'.$product->getPhoto());
+            if (file_exists('assets/src/' . $product->getPhoto())) {
+                unlink('assets/src/' . $product->getPhoto());
             }
             $em->remove($product);
             $em->flush();
@@ -285,11 +286,11 @@ class ApiController extends AbstractController
     }
 
 
-   /**
+    /**
      * @Route("categorie", name="DeleteCategorie",  methods={"DELETE"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function DeleteCategorie(Request $request, CategoriesRepository $cat,EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
+    public function DeleteCategorie(Request $request, CategoriesRepository $cat, EntityManagerInterface $em, ValidatorInterface $validator): JsonResponse
     {
         try {
             $post = json_decode($request->getContent());
@@ -301,8 +302,8 @@ class ApiController extends AbstractController
 
             }
             $categorie = $cat->find($post->id);
-            if(file_exists('assets/src/'.$categorie->getPicture())){
-                unlink('assets/src/'.$categorie->getPicture());
+            if (file_exists('assets/src/' . $categorie->getPicture())) {
+                unlink('assets/src/' . $categorie->getPicture());
             }
 
             $em->remove($categorie);
