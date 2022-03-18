@@ -25,7 +25,7 @@ class ProductsType extends AbstractType
             ->add('description', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'], 'required'=>false,
             ])
-            ->add('photo',FileType::class,['mapped' => false, 'required'=>false,'attr'=>['accept'=>'image/*'],'data_class' => null])
+            ->add('photo',FileType::class,['mapped' => false, 'required'=>false,'attr'=>['accept'=>'image/*' , 'class'=>'form-control-file'],'data_class' => null])
             ->add('label')
             ->add('ref')
             ->add('price',null,['label'=>'Prix'])

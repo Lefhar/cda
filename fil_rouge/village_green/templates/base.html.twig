@@ -133,7 +133,25 @@
 
 
                             <li class="nav-item">
-                                <a class="navbar-brand mb-0 h1" href="{{ path('paniers') }}">
+                                <a class="navbar-brand mb-0 h1" href="{{ path('paniers') }}"
+                                   data-toggle="popover" data-trigger="hover" title="panier" data-placement="bottom"
+                                   data-html="true" data-content="
+                                   {% if app.session.get('panier') %}
+                                    {% set total =0 %}
+                                        {% for key,row in app.session.get('panier') %}
+                                        <p><img height='50px' src='/assets/src/{{ row.photo }}' alt='{{ row.name }}'> {{ row.name }}</p>
+                                        <p>Quantité : <span class='text-success'>{{ row.qte }}</span>  Prix : <span class='text-success'>{{ row.prix }}€</span></p><hr>
+
+                                            {% if key matches '/^\\d+$/' %}
+                                                {% set TotalPanier =  TotalPanier + app.session.get('panier')[key]["qte"]*row.prix %}
+                                            {% endif %}
+                                        {% endfor %}
+                                      <p>Total : <span class='text-success'>  {{ TotalPanier }} €</span> </p>
+                                   {% else %}
+                                   Votre panier est vide
+                                   {% endif %}
+
+                                   ">
                                     <span class="fa fa-shopping-cart fa-2x bgcaddie"></span>
                                     {#                                    <img class="img-fluid" src="/assets/src/picto-panier.png" alt="Panier"/> #}
                                     {% if app.session.get('panier') %}
@@ -148,7 +166,9 @@
                                         <span class="badge badge-pill badge-danger">{{ TotalPanier }}</span>
                                     {% endif %}
                                 </a>
+
                             </li>
+
                             <li class="nav-item">
                                 <a class="navbar-brand mb-0 h1" href=/annonces/liste">
                                     <img class="img-fluid" src="/assets/src/picto-pays.png" alt="pays"/>
@@ -285,6 +305,7 @@
         crossorigin="anonymous"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="/assets/js/script.js?id="></script>
+
 </body>
 </html>
 <!-- fin footer-->

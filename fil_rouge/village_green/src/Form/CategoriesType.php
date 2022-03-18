@@ -16,7 +16,7 @@ class CategoriesType extends AbstractType
     {
         $builder
             ->add('name',null,['label'=>'Nom'])
-            ->add('picture',FileType::class,['label'=>'Photo','mapped' => false, 'required'=>false,'attr'=>['accept'=>'image/*'],'data_class' => null])
+            ->add('picture',FileType::class,['label'=>'Photo','mapped' => false, 'required'=>false,'attr'=>['accept'=>'image/*', 'class'=>'form-control-file'],'data_class' => null])
            // ->add('souscat',null,['label'=>'Séléctionner la catégorie parent','attr'=>['class'=>'custom-select']])
             ->add('souscat', EntityType::class, [
                 'class' => Categories::class,

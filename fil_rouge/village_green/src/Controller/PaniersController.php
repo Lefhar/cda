@@ -29,7 +29,8 @@ class PaniersController extends AbstractController
                 "name" => $request->get('name'),
                 "photo" => $request->get('photo'),
                 "qte" => $request->get('qte'),
-                "stock" => $produit->getStock()
+                "stock" => $produit->getStock(),
+                "prix" => $produit->getPrice()
             ];
             $session->set("panier", $panier);
         }
