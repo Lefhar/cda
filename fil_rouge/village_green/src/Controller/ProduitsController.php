@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Products;
 use App\Repository\CategoriesRepository;
 use App\Repository\ProductsRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function PHPUnit\Framework\throwException;
@@ -18,11 +20,16 @@ class ProduitsController extends AbstractController
     /**
      * @Route("/", name="produits")
      */
-    public function produits(ProductsRepository $repo,CategoriesRepository $cat): Response
+    public function produits(ProductsRepository $repo,CategoriesRepository $cat, PaginatorInterface $paginator, Request $request): Response
     {
+        $produit = $paginator->paginate(
+            $repo->findAll(),
+            $request->query->getInt('page', 1),
+            10
+        );
 //        dump($repo->findAll());
         return $this->render('produits/index.html.twig', [
-            'produits' => $repo->findAll(),
+            'produits' => $produit,
             'menu'=> $cat->findAll()
         ]);
     }
@@ -39,6 +46,7 @@ class ProduitsController extends AbstractController
 
                 'menu'=> $cat->findAll()
             ]);
+
         }
         return $this->render('produits/categorie.html.twig', [
             'produits' => $produit,
