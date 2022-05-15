@@ -35,6 +35,31 @@ class PaniersController extends AbstractController
             $session->set("panier", $panier);
         }
        // dump($panier);
+   //     return $this->json($panier,201,[]);
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/paniers/add/json", name="panierAddJson")
+     */
+    public function panierAddJson(SessionInterface $session,ProductsRepository $prod, Request $request): Response
+    {
+        $panier = $session->get("panier", []);
+
+
+        if ($request->getMethod() == 'POST') {
+            $produit = $prod->find($request->get('produit'));
+            $panier[$request->get('produit')] = [
+                "name" => $request->get('name'),
+                "photo" => $request->get('photo'),
+                "qte" => $request->get('qte'),
+                "stock" => $produit->getStock(),
+                "prix" => $produit->getPrice()
+            ];
+            $session->set("panier", $panier);
+        }
+       // dump($panier);
         return $this->json($panier,201,[]);
 //        $referer = $request->headers->get('referer');
 //        return new RedirectResponse($referer);
