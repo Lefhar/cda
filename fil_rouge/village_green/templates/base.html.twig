@@ -68,7 +68,7 @@
 
                 {% endif %}
 
-                <a class="navbar-brand mb-0 h1" href="{{ path('paniers') }}">
+                <a class="navbar-brand mb-0 h1 panier" href="{{ path('paniers') }}">
                     <span class="fa fa-shopping-cart  fa-2x bgcaddie"></span>
                     {# {{ dump(app.session.get('panier')) }} #}
                     {% if app.session.get('panier') %}
@@ -133,7 +133,7 @@
 
 
                             <li class="nav-item">
-                                <a class="navbar-brand mb-0 h1" href="{{ path('paniers') }}"
+                                <a class="navbar-brand mb-0 h1 panier" href="{{ path('paniers') }}"
                                    data-toggle="popover" data-trigger="hover" title="panier" data-placement="bottom"
                                    data-html="true" data-content="
                                    {% if app.session.get('panier') %}
