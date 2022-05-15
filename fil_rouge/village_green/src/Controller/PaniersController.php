@@ -34,10 +34,10 @@ class PaniersController extends AbstractController
             ];
             $session->set("panier", $panier);
         }
-        dump($panier);
-
-        $referer = $request->headers->get('referer');
-        return new RedirectResponse($referer);
+       // dump($panier);
+        return $this->json($panier,201,[]);
+//        $referer = $request->headers->get('referer');
+//        return new RedirectResponse($referer);
     }
 
     /**
