@@ -74,7 +74,7 @@ $(document).ready(function () {
                 $.each(response, function (key, val) {
                     // console.log(val.qte);
                     resultat += parseInt(val.qte);
-                    prix += parseInt(val.prix) * parseInt(val.qte);
+                    prix += parseFloat(val.prix) * parseInt(val.qte);
                     let teste = `<p><img height='50px' src='/assets/src/${val.photo}' alt='${val.name}'> ${val.name}</p>
 <p>Quantité : <span class='text-success'>${val.qte}</span>  Prix : <span class='text-success'>${val.prix}€</span></p><hr>`
                     temp += teste;

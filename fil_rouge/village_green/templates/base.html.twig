@@ -273,7 +273,7 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <div id="contenupanier">
     {% if app.session.get('panier') %}
-        {% set total =0 %}
+        {% set TotalPanier =0 %}
         {% for key,row in app.session.get('panier') %}
             <p><img height='50px' src='/assets/src/{{ row.photo }}' alt='{{ row.name }}'> {{ row.name }}</p>
             <p>Quantité : <span class='text-success'>{{ row.qte }}</span>  Prix : <span class='text-success'>{{ row.prix }}€</span></p><hr>
