@@ -13,7 +13,7 @@ $(document).ready(function () {
         }
         }else{
 
-                let parentpanier = document.getElementsByClassName('bgcaddie');
+                let parentpanier = document.getElementsByClassName('fa-shopping-cart');
 
                 for (let i = 0; i < parentpanier.length; i += 1) {
 
@@ -38,14 +38,18 @@ $(document).ready(function () {
     }
 
     function updatePanier(newData) {
-        let objpanier = document.getElementsByClassName('panier');
-        for (let i = 0; i < objpanier.length; i += 1) {
-            let dataVal = objpanier[i].getAttribute("data-content");
-            objpanier[i].setAttribute("data-content", newData);
-            // console.log(newData)
-            // panier[i].innerHTML = count;
-        }
-    }
+        let objpanier = document.getElementById('contenupanier');
+        objpanier.innerHTML = newData;
+     }
+    // function updatePanier(newData) {
+    //     let objpanier = document.getElementsByClassName('panier');
+    //     for (let i = 0; i < objpanier.length; i += 1) {
+    //         let dataVal = objpanier[i].getAttribute("data-content");
+    //         objpanier[i].setAttribute("data-content", newData);
+    //         // console.log(newData)
+    //         // panier[i].innerHTML = count;
+    //     }
+    // }
 
     $("form").submit(function (event) {
         console.log(event.target.action)
@@ -75,7 +79,8 @@ $(document).ready(function () {
 <p>Quantité : <span class='text-success'>${val.qte}</span>  Prix : <span class='text-success'>${val.prix}€</span></p><hr>`
                     temp += teste;
                 });
-                let total = `<p>Total : <span class='text-success'>  ${prix} €</span> </p>`;
+                let total = `<p>Total : <span class='text-success'>  ${prix} €</span> </p>
+<p>   <a class="btn btn-success text-light" href="/paniers/">Voir le panier</a></p>`;
                 temp = temp + total;
                 // console.log(response);
                 // console.log(prix);
@@ -96,4 +101,14 @@ $(document).ready(function () {
             });
         }
     });
+
 });
+function openNav() {
+   // document.getElementById("sideNavigation").style.width = "30%";
+    document.getElementById("sideNavigation").classList.add("widthcart");
+}
+
+function closeNav() {
+    document.getElementById("sideNavigation").classList.remove("widthcart");
+  //  document.getElementById("sideNavigation").style.width = "0";
+}
