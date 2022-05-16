@@ -94,6 +94,30 @@ class PaniersController extends AbstractController
 //        ]);
     }
 
+   /**
+     * @Route("/paniers/update/json", name="paniers_update_json")
+     */
+    public function panierUpdateJson(SessionInterface $session,ProductsRepository $prod, Request $request): Response
+    {
+        $panier = $session->get("panier", []);
+        if ($request->getMethod() == 'POST') {
+            $produit = $prod->find($request->get('id'));
+            $id = $request->get('id');
+            if($request->get('qte')<=0){
+                unset($panier[$id]);
+            }else{
+                if($request->get('qte')<= $produit->getStock()) {
+                    $panier[$id]["qte"]=$request->get('qte');
+                }
+
+            }
+
+
+            $session->set("panier", $panier);
+        }
+        return $this->json($panier,201,[]);
+    }
+
     /**
      * @Route("/paniers/", name="paniers")
      */
