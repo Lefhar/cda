@@ -49,7 +49,7 @@ $(document).ready(function () {
 
 function updateCountPanier(count) {
     let panier = document.getElementsByClassName('badge badge-pill badge-danger');
-    console.log(panier.length);
+    //console.log(panier.length);
     if(panier.length>0){
         for (let i = 0; i < panier.length; i += 1) {
 
@@ -101,9 +101,22 @@ function updateProduit(formproduitcc){
 
     //var dataToSend = document.querySelector("form").serialize();
     // console.log(event.target.action)
-    const data = new FormData(formproduitcc);
+    const dataz = new FormData(formproduitcc);
 
  let formproduit = $(formproduitcc).serialize();
+
+
+       // console.log(dataz);
+     //   console.log(this.id);
+       console.log(formproduitcc.elements.namedItem('id').value);
+       const idprod = formproduitcc.elements.namedItem('id').value;
+       const qteprod = parseInt(formproduitcc.elements.namedItem('qte['+idprod+']').value);
+       console.log(formproduitcc.elements.namedItem('qte['+idprod+']').value);
+    if(qteprod===0){
+                        document.getElementById('prod'+idprod).remove();
+                 }
+
+
 
     $.ajax({
         url: formproduitcc.action+'/json' ,

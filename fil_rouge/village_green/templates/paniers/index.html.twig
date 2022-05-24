@@ -30,10 +30,14 @@
                         <strong>Prix Unitaire HT</strong>
                     </div>
                     <hr class="my-4 w-100">
+            </div></div>
                     {% set total =0 %}
                     {% set quantite =0 %}
                     {% for  key,row in panier %}
                         {% if key matches '/^\\d+$/' %}
+        <div class="container bg-center" id="prod{{ key }}">
+            <div class="row p-4" >
+
                             <div class="col-sm-3 col-12 pl-5 text">
                                 <a href="{{ path('produit_details', {id : key}) }}">
                                     <img height="150px" src="/assets/src/{{ row.photo }}" alt="{{ row.name }}">
@@ -46,7 +50,7 @@
                                 <div class="form-row">
                                     <div class="col-6">
                                         <form action="{{ path('paniers_update') }}" method="post">
-                                            <input type="hidden" name="id" value="{{ key }}">
+                                            <input type="hidden" name="id" id="{{ key }}" value="{{ key }}">
 
                                             <input type="number" class="form-control" name="qte" id="qte[{{ key }}]"
                                                    value="{{ row.qte }}" min="0" max="{{ row.stock }}"
@@ -65,16 +69,22 @@
                                 </div>
 
                             </div>
+
                             <div class="col-sm-2 col-12">
 
                                 {{ row.prix }} €
                             </div>
+
+
                             <hr class="my-4 w-100">
                             {% set total = total + row.qte*row.prix %}
                             {% set quantite = quantite + row.qte %}
                         {% endif %}
                     {% endfor %}
-
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
                 {% else %}
                     <div class="col-sm-12 text-center pb-4">
                         <span class="fa fa-shopping-cart fa-10x bgcaddie"></span>
@@ -86,7 +96,8 @@
                 {% endif %}
                 {% if panier %}
             </div>
-            <div class="row pt-2 pb-2">
+
+            <div class="row pt-2 pb-2 bg-center">
                 <div class="col-sm-6">
                     <h2> Sous-total ({{ quantite }} article{% if quantite >1 %}s{% endif %}) : <span
                                 class="text-success" id="totalpanier"> {{ total }} €</span></h2>
